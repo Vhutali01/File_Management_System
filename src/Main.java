@@ -11,41 +11,32 @@ public class Main {
 
     public static void main(String[] args) {
 
-
-
-
-
         current_Directory = file.listFiles();
 
         boolean run = true; //runs while loop if true
 
         while(run) {
 
-            for (int i = 0; i < current_Directory.length; i++) {
+
+            if(current_Directory == null) {
+
+                System.out.println("\nNo Directory has been chosen.\n");
+                continue;
+
+            }
+
+            int dirLength = current_Directory.length;
+
+            for (int i = 0; i < dirLength; i++) {
 
                 System.out.println(i + "." + current_Directory[i].getName());
 
             }
+
             System.out.printf("\nPlease input a number from 0 to %s, or the letter 'Q' to quit:\t", current_Directory.length);
-            Scanner scanner = new Scanner(System.in);
 
-            String input = scanner.nextLine();
+            run = inputPrompt();
 
-            if(input.equals("q") || input.equals("Q")) {
-
-                run = false;
-
-            }if(input.equals("b") || input.equals("B")){
-
-                back();
-
-            }else{
-
-                chosen(input, current_Directory);
-
-                System.out.println("something is off ");
-
-            }
         }
     }
 
@@ -53,11 +44,17 @@ public class Main {
 
         int num = Integer.parseInt(s);
 
+        File file1 = cD[num];
+
+        count++;
+
         System.out.println("\n" + num);
 
-        if(cD[num].isDirectory()) {
+        if(file1.isDirectory()) {
 
-            madeDir(cD[num]);
+            file = file1;
+
+            madeDir(file1);
 
         }else{
 
@@ -82,13 +79,39 @@ public class Main {
             count--;
             file = new File(parent);
 
+            current_Directory = file.listFiles();
+
         }else{
 
             System.out.println("\nCannot go back since this is the root directory.\n");
 
         }
-
     }
 
+    public static boolean inputPrompt(){
 
+        Scanner scanner2 = new Scanner(System.in);
+
+        String input = scanner2.nextLine();
+
+        if (input.equals("q") || input.equals("Q")) {
+
+            return false;
+
+        }
+        if (input.equals("b") || input.equals("B")) {
+
+            back();
+
+        } else {
+
+            chosen(input, current_Directory);
+
+            System.out.println("something is off ");
+
+        }
+
+        return true;
+
+    }
 }
